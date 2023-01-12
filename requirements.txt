@@ -1,0 +1,6 @@
+flask
+gunicorn
+bs4
+requests
+pathlib
+pybufrkit
