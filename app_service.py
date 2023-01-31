@@ -36,7 +36,7 @@ class AppService:
             [6494, 'MONT RIGI           ', 50.51, 6.07]]
     df = pd.DataFrame(lst, columns =['stationid', 'stationname', 'lat', 'lon'])
     df = df.set_index('stationid')
-    df['timestamp'] = timestamp
+    df['utctimestamp'] = timestamp
     df["temperature"] = np.nan
     df["dewpointtemperature"] = np.nan
     df["visibility"] = np.nan
@@ -64,7 +64,7 @@ class AppService:
     for stationid in df1.index.values:
       df1.at[stationid, "temperature"] = csv.at[stationid, 'temp']
       df1.at[stationid, "windgusts"] = csv.at[stationid, 'wind_peak_speed']
-      df1.at[stationid, "windspeed"] = csv.at[stationid, 'wind_speed']
+      df1.at[stationid, "windspeed"] = round((csv.at[stationid, 'wind_speed']),1)
       df1.at[stationid, "winddirectiondegrees"] = int(csv.at[stationid, 'wind_direction'])
       df1.at[stationid, "humidity"] = csv.at[stationid, 'humidity_relative']
       df1.at[stationid, "precipitation"] = csv.at[stationid, 'precip_quantity']
@@ -129,7 +129,7 @@ class AppService:
       windgusts = None
 
     try:
-      windspeed = DataQuerent(NodePathParser()).query(bufr_message, '011002').get_values(0)[0]
+      windspeed = round((DataQuerent(NodePathParser()).query(bufr_message, '011002').get_values(0)[0]),1)
     except Exception:
       windspeed = None
 
@@ -177,7 +177,7 @@ class AppService:
         "stationname":stationname,
         "lat":lat,
         "lon":lon,
-        "timestamp":timestamp,
+        "utctimestamp":timestamp,
         "temperature":temperature,
         "dewpointtemperature":dewpointtemperature,
         "visibility":visibility,
