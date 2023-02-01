@@ -9,8 +9,6 @@ from flask import jsonify
 import pandas as pd
 import numpy as np
 
-timestamp = '2023-01-19T14:00:00'
-
 class AppService:
   def create_kmi_df(self,timestamp):
     # List of 20 stations
@@ -225,7 +223,7 @@ class AppService:
   def run(self,timestamp):
     df_csv = self.get_kmi_csv(timestamp)
     df_bufr  = self.get_kmi_bufr(timestamp)
-    df_merged = df_csv.combine_first(df_bufr)
+    df_merged = df_bufr.combine_first(df_csv)
     df_merged = df_merged.reset_index()
     df = df_merged.replace({np.nan: None})
 
